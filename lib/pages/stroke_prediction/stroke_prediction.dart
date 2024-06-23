@@ -1,8 +1,5 @@
-import 'package:dd/config/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-
-import '../../config/user.dart';
 
 class StrokePrediction extends StatefulWidget {
   const StrokePrediction({super.key});
@@ -14,12 +11,10 @@ class StrokePrediction extends StatefulWidget {
 class _StrokePredictionState extends State<StrokePrediction> {
 
   var box = Hive.openBox('user');
-  bool _isUser = false;
 
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -55,7 +50,6 @@ class _StrokePredictionState extends State<StrokePrediction> {
                       ],
                     );
                   });
-
                 }
               );
               return const Center(child: Text("There's no data."),);

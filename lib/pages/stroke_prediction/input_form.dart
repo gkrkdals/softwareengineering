@@ -30,14 +30,20 @@ class FieldName extends StatelessWidget {
 }
 
 class Input extends StatelessWidget {
-  const Input({super.key, required this.controller});
+  const Input({super.key,
+    required this.controller,
+    this.keyboardType
+  });
 
   final TextEditingController? controller;
+  final TextInputType keyboardType = TextInputType.text;
+
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
+      keyboardType: keyboardType,
       decoration: const InputDecoration(
         hintText: 'Enter your details here',
         enabledBorder: OutlineInputBorder(
@@ -60,20 +66,20 @@ class InputForm extends StatefulWidget {
 
 class _InputFormState extends State<InputForm> {
 
-  TextEditingController? _ageController;
-  String _genderSelection = 'male';
+  TextEditingController? _ageController, _avgGlucoseController;
+  String _genderSelection = 'male', _workType = 'private';
   bool? _hypertension, _heartDisease, _everMarried;
+  int? _residenceType;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _ageController = TextEditingController();
+    _avgGlucoseController = TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -95,7 +101,6 @@ class _InputFormState extends State<InputForm> {
               Input(controller: _ageController),
               const VPad(),
               const FieldName(text: 'Gender'),
-              const VPad(),
               DropdownButton(
                 value: _genderSelection,
                 items: const [
@@ -125,6 +130,9 @@ class _InputFormState extends State<InputForm> {
                   SizedBox(
                     width: 100,
                     child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll<Color>(_hypertension == true ? Colors.black12 : Colors.transparent)
+                        ),
                       onPressed: () {
                         setState(() {
                           _hypertension = true;
@@ -137,6 +145,9 @@ class _InputFormState extends State<InputForm> {
                   SizedBox(
                     width: 100,
                     child: OutlinedButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll<Color>(_hypertension == false ? Colors.black12 : Colors.transparent)
+                      ),
                       onPressed: () {
                         setState(() {
                           _hypertension = false;
@@ -146,7 +157,143 @@ class _InputFormState extends State<InputForm> {
                     ),
                   ),
                 ],
-              )
+              ),
+              const VPad(),
+              const FieldName(text: 'Heart Disease'),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll<Color>(_heartDisease == true ? Colors.black12 : Colors.transparent)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _heartDisease = true;
+                          });
+                        },
+                        child: const Text('Yes')
+                    ),
+                  ),
+                  const HPad(),
+                  SizedBox(
+                    width: 100,
+                    child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll<Color>(_heartDisease == false ? Colors.black12 : Colors.transparent)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _heartDisease = false;
+                          });
+                        },
+                        child: const Text('No')
+                    ),
+                  ),
+                ],
+              ),
+              const VPad(),
+              const FieldName(text: 'Ever Married'),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll<Color>(_everMarried == true ? Colors.black12 : Colors.transparent)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _everMarried = true;
+                          });
+                        },
+                        child: const Text('Yes')
+                    ),
+                  ),
+                  const HPad(),
+                  SizedBox(
+                    width: 100,
+                    child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll<Color>(_everMarried == false ? Colors.black12 : Colors.transparent)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _everMarried = false;
+                          });
+                        },
+                        child: const Text('No')
+                    ),
+                  ),
+                ],
+              ),
+              const VPad(),
+              const FieldName(text: 'Residence Type'),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll<Color>(_residenceType == 1 ? Colors.black12 : Colors.transparent)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _residenceType = 1;
+                          });
+                        },
+                        child: const Text('Urban')
+                    ),
+                  ),
+                  const HPad(),
+                  SizedBox(
+                    width: 100,
+                    child: OutlinedButton(
+                        style: ButtonStyle(
+                            backgroundColor: WidgetStatePropertyAll<Color>(_residenceType == 2 ? Colors.black12 : Colors.transparent)
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _residenceType = 2;
+                          });
+                        },
+                        child: const Text('Rural')
+                    ),
+                  ),
+                ],
+              ),
+              const VPad(),
+              const FieldName(text: 'Work Type'),
+              DropdownButton(
+                  value: _workType,
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'private',
+                      child: Text('Private')
+                    ),
+                    DropdownMenuItem(
+                      value: 'self-employed',
+                      child: Text('Self-employed')
+                    ),
+                    DropdownMenuItem(
+                        value: 'govt-job',
+                        child: Text('Govt-job')
+                    ),
+                    DropdownMenuItem(
+                      value: 'other',
+                      child: Text('Other')
+                    )
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      _workType = value!;
+                    });
+                  }
+              ),
+              const FieldName(text: 'Average Glucose Level (mg/dL)'),
+              const VPad(),
+              Input(controller: _avgGlucoseController),
             ],
           ),
         )
