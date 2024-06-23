@@ -1,5 +1,5 @@
 import 'package:dd/menu.dart';
-import 'package:dd/pages/nearby_hospitals.dart';
+import 'package:dd/pages/nearby_hospitals/nearby_hospitals.dart';
 import 'package:dd/pages/stroke_prediction/input_form.dart';
 import 'package:dd/pages/stroke_prediction/stroke_prediction.dart';
 import 'package:dd/pages/stroke_prevention.dart';

@@ -44,7 +44,7 @@ class _StrokePredictionState extends State<StrokePrediction> {
                           child: const Text('Yes')
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.of(dContext).pop(),
                           child: const Text('No')
                         )
                       ],

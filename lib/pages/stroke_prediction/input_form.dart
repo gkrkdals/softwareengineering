@@ -32,11 +32,11 @@ class FieldName extends StatelessWidget {
 class Input extends StatelessWidget {
   const Input({super.key,
     required this.controller,
-    this.keyboardType
+    this.keyboardType = TextInputType.text
   });
 
   final TextEditingController? controller;
-  final TextInputType keyboardType = TextInputType.text;
+  final TextInputType keyboardType;
 
 
   @override
@@ -66,7 +66,7 @@ class InputForm extends StatefulWidget {
 
 class _InputFormState extends State<InputForm> {
 
-  TextEditingController? _ageController, _avgGlucoseController;
+  TextEditingController? _ageController, _avgGlucoseController, _bmiController;
   String _genderSelection = 'male', _workType = 'private';
   bool? _hypertension, _heartDisease, _everMarried;
   int? _residenceType;
@@ -76,6 +76,7 @@ class _InputFormState extends State<InputForm> {
     super.initState();
     _ageController = TextEditingController();
     _avgGlucoseController = TextEditingController();
+    _bmiController = TextEditingController();
   }
 
   @override
@@ -291,9 +292,55 @@ class _InputFormState extends State<InputForm> {
                     });
                   }
               ),
+              const VPad(),
               const FieldName(text: 'Average Glucose Level (mg/dL)'),
               const VPad(),
-              Input(controller: _avgGlucoseController),
+              Input(controller: _avgGlucoseController, keyboardType: TextInputType.number,),
+              const VPad(),
+              const FieldName(text: 'BMI'),
+              const VPad(),
+              Input(controller: _bmiController, keyboardType: TextInputType.number,),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 50)),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  child: const Text('Submit'),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (dContext) {
+                        return AlertDialog(
+                          content: const Text('Are you sure you want to submit these informations?'),
+                          actions: [
+                            TextButton(onPressed: () {
+                              Navigator.of(dContext).pop();
+                              showDialog(
+                                context: context,
+                                builder: (ddContext) {
+                                  return AlertDialog(
+                                    content: const Text('The information is successfully saved.'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(ddContext).pop();
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Close')
+                                      )
+                                    ],
+                                  );
+                                }
+                              );
+                            }, child: const Text('Yes')),
+                            TextButton(onPressed: () => Navigator.of(dContext).pop(), child: const Text('No'))
+                          ],
+                        );
+                      }
+                    );
+                  },
+                ),
+              ),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
             ],
           ),
         )
