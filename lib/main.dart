@@ -1,6 +1,19 @@
+import 'package:dd/menu.dart';
+import 'package:dd/pages/nearby_hospitals.dart';
+import 'package:dd/pages/stroke_prediction/input_form.dart';
+import 'package:dd/pages/stroke_prediction/stroke_prediction.dart';
+import 'package:dd/pages/stroke_prevention.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-void main() {
+void main() async {
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
+  await Hive.initFlutter();
+
   runApp(const MyApp());
 }
 
@@ -16,7 +29,13 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: '뇌졸중 예방 프로그램'),
+      routes: {
+        '/': (context) => const MyHomePage(title: '뇌졸중 예방 프로그램'),
+        '/prediction': (context) => const StrokePrediction(),
+        '/prediction/input': (context) => const InputForm(),
+        '/prevention': (context) => const StrokePrevention(),
+        '/hospitals': (context) => const NearbyHospitals(),
+      },
     );
   }
 }
@@ -39,32 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        children: [
-          Card(child: ListTile(
-            leading: FlutterLogo(),
-            title: Text('뇌졸중 자가 진단',),
-            trailing: Icon(Icons.more_vert),
-            onTap: () {
-
-            },
-          ),),
-          Card(child: ListTile(
-            leading: FlutterLogo(),
-            title: Text('뇌졸중 예방 방법'),
-            trailing: Icon(Icons.more_vert),
-          ),),
-          Card(child: ListTile(
-            leading: FlutterLogo(),
-            title: Text('가까운 병원'),
-            trailing: Icon(Icons.more_vert),
-            onTap: () {
-
-            },
-          ),),
-        ],
-      ),
+      body: const Menu(),
     );
   }
 }
